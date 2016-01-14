@@ -7,9 +7,11 @@ public class FlightBoardController : MonoBehaviour {
     public float rotationSpeed;
     public float maxRotLeftRight;
     public float maxRotUpDown;
-    public float lvlGenerationBorderLeft;
-    public float lvlGenerationBorderSky;
-    public float lvlGenerationBorderRight;
+    public float resetRotationFactor;
+    public float rotationPositionFactor;
+    public float lvlGenerationTunnelWidth;
+    public float lvlGenerationTunnelHeight;
+    public float lvlGenerationTunnelInlineBorder;
     private int lvlGenerationCurrent;
     public int lvlGenerationBackwards;
     public int lvlGenerationInAdvance;
@@ -26,10 +28,10 @@ public class FlightBoardController : MonoBehaviour {
         Mesh mesh = new Mesh();
         {
             mesh.vertices = new Vector3[]{
-                new Vector3(-lvlGenerationBorderLeft, 0, 0),
-                new Vector3(-lvlGenerationBorderLeft, 0, lvlGenerationMeshDistance),
-                new Vector3(lvlGenerationBorderRight, 0, lvlGenerationMeshDistance),
-                new Vector3(lvlGenerationBorderRight, 0, 0)
+                new Vector3(-lvlGenerationTunnelWidth, 0, 0),
+                new Vector3(-lvlGenerationTunnelWidth, 0, lvlGenerationMeshDistance),
+                new Vector3(lvlGenerationTunnelWidth, 0, lvlGenerationMeshDistance),
+                new Vector3(lvlGenerationTunnelWidth, 0, 0)
             };
             mesh.triangles = new int[]{
                 0,1,2,
@@ -45,17 +47,33 @@ public class FlightBoardController : MonoBehaviour {
 	void Update ()
     {
         Vector3 r = transform.eulerAngles;
-        if (Input.GetKey(KeyCode.W)) {
-            r.x -= rotationSpeed;
-        }
+        float deltaRotation = rotationSpeed * Time.deltaTime;
+        float deltaResetRotation = deltaRotation * resetRotationFactor;
         if (Input.GetKey(KeyCode.S)) {
-            r.x += rotationSpeed;
+            r.x -= deltaRotation;
+        } else if (Input.GetKey(KeyCode.W)) {
+            r.x += deltaRotation;
+        } else {
+            if (r.x > deltaResetRotation && r.x < 180) {
+                r.x -= deltaResetRotation;
+            } else if (r.x - 360 < -deltaResetRotation && r.x > 180) {
+                r.x += deltaResetRotation;
+            } else {
+                r.x += 0;
+            }
         }
         if (Input.GetKey(KeyCode.A)) {
-            r.z += rotationSpeed;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            r.z -= rotationSpeed;
+            r.z += deltaRotation;
+        } else if (Input.GetKey(KeyCode.D)) {
+            r.z -= deltaRotation;
+        } else {
+            if (r.z > deltaResetRotation && r.z < 180) {
+                r.z -= deltaResetRotation;
+            } else if (r.z - 360 < -deltaResetRotation && r.z > 180) {
+                r.z += deltaResetRotation;
+            } else {
+                r.z += 0;
+            }
         }
         if (r.z > maxRotLeftRight && r.z < 180) {
             r.z = maxRotLeftRight;
@@ -71,7 +89,27 @@ public class FlightBoardController : MonoBehaviour {
         }
         transform.eulerAngles = r;
         Vector3 p = transform.position;
-        p.z += speed;
+        p.z += speed * Time.deltaTime;
+        if (r.x > 180) {
+            r.x -= 360;
+        }
+        if (r.z > 180) {
+            r.z -= 360;
+        }
+        p.x -= r.z * rotationPositionFactor * Time.deltaTime;
+        p.y -= r.x * rotationPositionFactor * Time.deltaTime;
+        if (p.x > lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder) {
+            p.x = lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder;
+        }
+        if (p.x < -lvlGenerationTunnelWidth + lvlGenerationTunnelInlineBorder) {
+            p.x = -lvlGenerationTunnelWidth + lvlGenerationTunnelInlineBorder;
+        }
+        if (p.y > lvlGenerationTunnelHeight - lvlGenerationTunnelInlineBorder) {
+            p.y = lvlGenerationTunnelHeight - lvlGenerationTunnelInlineBorder;
+        }
+        if (p.y < lvlGenerationTunnelInlineBorder) {
+            p.y = lvlGenerationTunnelInlineBorder;
+        }
         transform.position = p;
         int lvlGenerationUpTo = Convert.ToInt32(Math.Ceiling(transform.position.z / lvlGenerationMeshDistance)) + lvlGenerationInAdvance;
         while (lvlGenerationCurrent < lvlGenerationUpTo) {

@@ -235,6 +235,34 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: lvlGenerationTunnelWidth
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: lvlGenerationTunnelHeight
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationSpeed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: lvlGenerationInAdvance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: resetRotationFactor
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467032, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationPositionFactor
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
   m_IsPrefabParent: 0
