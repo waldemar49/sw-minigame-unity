@@ -217,6 +217,48 @@ Prefab:
     - {fileID: 13592974, guid: f79bb77f0628824438696da2aaac8a98, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f79bb77f0628824438696da2aaac8a98, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &509909086
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 486196, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a82c7d80f45e6024392b094627a3b2d2, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &748041444
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +493,18 @@ Prefab:
       propertyPath: originalCollectable
       value: 
       objectReference: {fileID: 876585061}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationSource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationDestination
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationDeviceOffset
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 13609708, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
     - {fileID: 6525284, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}

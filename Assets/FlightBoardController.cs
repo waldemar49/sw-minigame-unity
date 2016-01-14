@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FlightBoardController : MonoBehaviour {
+public class FlightBoardController : MonoBehaviour, PlainRotation.Listener {
     public float speed;
     public float rotationSpeed;
     public float maxRotLeftRight;
@@ -29,6 +29,8 @@ public class FlightBoardController : MonoBehaviour {
     }
 
 	void Start () {
+        RotationController.CalibratedRotation().Add(this);
+
         lvlGenerationGameObjects = new List<GameObject>();
         lvlGenerationCurrent = -lvlGenerationBackwards;
         transform.position = new Vector3(0.0f, 2.0f, 0.0f);
@@ -54,50 +56,8 @@ public class FlightBoardController : MonoBehaviour {
         lvlGenerationTestMesh = mesh;
     }
 
-	void Update ()
-    {
+	void Update () {
         Vector3 r = transform.eulerAngles;
-        float deltaRotation = rotationSpeed * Time.deltaTime;
-        float deltaResetRotation = deltaRotation * resetRotationFactor;
-        if (Input.GetKey(KeyCode.S)) {
-            r.x -= deltaRotation;
-        } else if (Input.GetKey(KeyCode.W)) {
-            r.x += deltaRotation;
-        } else {
-            if (r.x > deltaResetRotation && r.x < 180) {
-                r.x -= deltaResetRotation;
-            } else if (r.x - 360 < -deltaResetRotation && r.x > 180) {
-                r.x += deltaResetRotation;
-            } else {
-                r.x += 0;
-            }
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            r.z += deltaRotation;
-        } else if (Input.GetKey(KeyCode.D)) {
-            r.z -= deltaRotation;
-        } else {
-            if (r.z > deltaResetRotation && r.z < 180) {
-                r.z -= deltaResetRotation;
-            } else if (r.z - 360 < -deltaResetRotation && r.z > 180) {
-                r.z += deltaResetRotation;
-            } else {
-                r.z += 0;
-            }
-        }
-        if (r.z > maxRotLeftRight && r.z < 180) {
-            r.z = maxRotLeftRight;
-        }
-        if (r.z < 360 - maxRotLeftRight && r.z > 180) {
-            r.z = 360 - maxRotLeftRight;
-        }
-        if (r.x > maxRotUpDown && r.x < 180) {
-            r.x = maxRotUpDown;
-        }
-        if (r.x < 360 - maxRotUpDown && r.x > 180) {
-            r.x = 360 - maxRotUpDown;
-        }
-        transform.eulerAngles = r;
         Vector3 p = transform.position;
         p.z += speed * Time.deltaTime;
         if (r.x > 180) {
@@ -140,8 +100,7 @@ public class FlightBoardController : MonoBehaviour {
             }
             ++lvlGenerationCurrent;
         }
-        for (int i = lvlGenerationGameObjects.Count - 1; i >= 0; i--)
-        {
+        for (int i = lvlGenerationGameObjects.Count - 1; i >= 0; i--) {
             GameObject lvlGenerationGameObject = lvlGenerationGameObjects[i];
             if (transform.position.z - lvlGenerationGameObject.transform.position.z > lvlGenerationMeshDistance * lvlGenerationBackwards) {
                 lvlGenerationGameObjects.RemoveAt(i);
@@ -157,5 +116,24 @@ public class FlightBoardController : MonoBehaviour {
             score++;
             UpdateScoreDisplay();
         }
+    }
+
+    public void On(Quaternion q) {
+        transform.rotation = q;
+        Vector3 r = transform.eulerAngles;
+        if (r.x > maxRotUpDown && r.x < 180) {
+            r.x = maxRotUpDown;
+        }
+        if (r.x < 360 - maxRotUpDown && r.x > 180) {
+            r.x = 360 - maxRotUpDown;
+        }
+        r.y = 0.0f;
+        if (r.z > maxRotLeftRight && r.z < 180) {
+            r.z = maxRotLeftRight;
+        }
+        if (r.z < 360 - maxRotLeftRight && r.z > 180) {
+            r.z = 360 - maxRotLeftRight;
+        }
+        transform.eulerAngles = r;
     }
 }
