@@ -3,40 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FlightBoardController : MonoBehaviour {
-    private Vector3 origin;
-    public float speed = 2;
-    private Vector3 direction = Vector3.forward;
-    private float lvlGenerationBorderLeft = 10.0f;
-    private float lvlGenerationBorderSky = 30.0f;
-    private float lvlGenerationBorderRight = 10.0f;
+    public float speed;
+    public float lvlGenerationBorderLeft;
+    public float lvlGenerationBorderSky;
+    public float lvlGenerationBorderRight;
     private int lvlGenerationCurrent;
-    private int lvlGenerationBackwards = 3;
-    private int lvlGenerationInAdvance = 10;
-    private int lvlGenerationMeshDistance = 4;
+    public int lvlGenerationBackwards;
+    public int lvlGenerationInAdvance;
+    public float lvlGenerationMeshDistance;
     private Mesh lvlGenerationTestMesh;
-    
-	void Start ()
-    {
-        origin = transform.position;
-        lvlGenerationCurrent = -lvlGenerationBackwards;
+    private List<GameObject> lvlGenerationGameObjects;
 
+	void Start () {
+        lvlGenerationGameObjects = new List<GameObject>();
+        lvlGenerationCurrent = -lvlGenerationBackwards;
+        transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        transform.up = Vector3.up;
         Mesh mesh = new Mesh();
         {
-            Vector3 p0 = new Vector3(0, 0, 0);
-            Vector3 p1 = new Vector3(1, 0, 0);
-            Vector3 p2 = new Vector3(0.5f, 0, Mathf.Sqrt(0.75f));
-            Vector3 p3 = new Vector3(0.5f, Mathf.Sqrt(0.75f), Mathf.Sqrt(0.75f) / 3);
             mesh.vertices = new Vector3[]{
-                p0,p1,p2,
-                p0,p2,p3,
-                p2,p1,p3,
-                p0,p3,p1
+                new Vector3(-lvlGenerationBorderLeft, 0, 0),
+                new Vector3(-lvlGenerationBorderLeft, 0, lvlGenerationMeshDistance),
+                new Vector3(lvlGenerationBorderRight, 0, lvlGenerationMeshDistance),
+                new Vector3(lvlGenerationBorderRight, 0, 0)
             };
             mesh.triangles = new int[]{
                 0,1,2,
-                3,4,5,
-                6,7,8,
-                9,10,11
+                0,2,3
             };
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
@@ -44,19 +37,26 @@ public class FlightBoardController : MonoBehaviour {
         }
         lvlGenerationTestMesh = mesh;
     }
-	
+
 	void Update () {
-        transform.Translate(direction * Time.deltaTime * speed);
-        float d = Vector3.Distance(origin, transform.position);
-        int next = Convert.ToInt32(Math.Ceiling(d / lvlGenerationMeshDistance)) + lvlGenerationInAdvance;
-        for (; lvlGenerationCurrent < next; ++lvlGenerationCurrent)
+        transform.Translate(Vector3.forward * speed);
+        int lvlGenerationUpTo = Convert.ToInt32(Math.Ceiling(transform.position.z / lvlGenerationMeshDistance)) + lvlGenerationInAdvance;
+        while (lvlGenerationCurrent < lvlGenerationUpTo) {
+            GameObject lvlGenerationGameObject = new GameObject();
+            lvlGenerationGameObject.AddComponent<MeshFilter>().sharedMesh = lvlGenerationTestMesh;
+            lvlGenerationGameObject.AddComponent<MeshRenderer>();
+            lvlGenerationGameObject.transform.position = Vector3.forward * lvlGenerationCurrent * lvlGenerationMeshDistance;
+            lvlGenerationGameObjects.Add(lvlGenerationGameObject);
+            ++lvlGenerationCurrent;
+        }
+        for (int i = lvlGenerationGameObjects.Count - 1; i >= 0; i--)
         {
-            Vector3 pos = origin + direction * lvlGenerationCurrent * lvlGenerationMeshDistance;
-            pos.y = 0.0f;
-            GameObject lvlObject = new GameObject();
-            lvlObject.AddComponent<MeshFilter>().sharedMesh = lvlGenerationTestMesh;
-            lvlObject.AddComponent<MeshRenderer>();
-            lvlObject.transform.position = pos;
+            GameObject lvlGenerationGameObject = lvlGenerationGameObjects[i];
+            if (transform.position.z - lvlGenerationGameObject.transform.position.z > lvlGenerationMeshDistance * lvlGenerationBackwards)
+            {
+                Destroy(lvlGenerationGameObject);
+                lvlGenerationGameObjects.RemoveAt(i);
+            }
         }
     }
 }
