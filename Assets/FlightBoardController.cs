@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlightBoardController : MonoBehaviour {
     public float speed;
@@ -17,14 +18,22 @@ public class FlightBoardController : MonoBehaviour {
     public int lvlGenerationInAdvance;
     public float lvlGenerationMeshDistance;
     public Material lvlGenerationBaseMaterial;
+    public Text scoreDisplay;
+    private int score;
     private Mesh lvlGenerationTestMesh;
     private List<GameObject> lvlGenerationGameObjects;
+
+    private void UpdateScoreDisplay() {
+        scoreDisplay.text = score.ToString();
+    }
 
 	void Start () {
         lvlGenerationGameObjects = new List<GameObject>();
         lvlGenerationCurrent = -lvlGenerationBackwards;
         transform.position = new Vector3(0.0f, 2.0f, 0.0f);
         transform.eulerAngles = Vector3.up;
+        score = 0;
+        UpdateScoreDisplay();
         Mesh mesh = new Mesh();
         {
             mesh.vertices = new Vector3[]{
@@ -113,7 +122,7 @@ public class FlightBoardController : MonoBehaviour {
         transform.position = p;
         int lvlGenerationUpTo = Convert.ToInt32(Math.Ceiling(transform.position.z / lvlGenerationMeshDistance)) + lvlGenerationInAdvance;
         while (lvlGenerationCurrent < lvlGenerationUpTo) {
-            GameObject lvlGenerationGameObject = new GameObject();
+            GameObject lvlGenerationGameObject = new GameObject("LvlGenerationGameObject");
             lvlGenerationGameObject.AddComponent<MeshFilter>().sharedMesh = lvlGenerationTestMesh;
             lvlGenerationGameObject.AddComponent<MeshRenderer>();
             lvlGenerationGameObject.transform.position = Vector3.forward * lvlGenerationCurrent * lvlGenerationMeshDistance;
@@ -129,6 +138,14 @@ public class FlightBoardController : MonoBehaviour {
                 Destroy(lvlGenerationGameObject);
                 lvlGenerationGameObjects.RemoveAt(i);
             }
+        }
+    }
+
+    void OnCollisionEnter(Collision col) {
+        if (col.gameObject.tag == "Collectable") {
+            Destroy(col.gameObject);
+            score++;
+            UpdateScoreDisplay();
         }
     }
 }
