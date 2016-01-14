@@ -175,11 +175,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 470158, guid: f79bb77f0628824438696da2aaac8a98, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 470158, guid: f79bb77f0628824438696da2aaac8a98, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 470158, guid: f79bb77f0628824438696da2aaac8a98, type: 2}
       propertyPath: m_LocalRotation.x
@@ -447,6 +447,10 @@ Prefab:
       propertyPath: scoreDisplay
       value: 
       objectReference: {fileID: 1516580309}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: originalCollectable
+      value: 
+      objectReference: {fileID: 876585061}
     m_RemovedComponents:
     - {fileID: 13609708, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
     - {fileID: 6525284, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}

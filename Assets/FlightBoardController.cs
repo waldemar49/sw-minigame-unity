@@ -19,6 +19,7 @@ public class FlightBoardController : MonoBehaviour {
     public float lvlGenerationMeshDistance;
     public Material lvlGenerationBaseMaterial;
     public Text scoreDisplay;
+    public GameObject originalCollectable;
     private int score;
     private Mesh lvlGenerationTestMesh;
     private List<GameObject> lvlGenerationGameObjects;
@@ -120,7 +121,8 @@ public class FlightBoardController : MonoBehaviour {
             p.y = lvlGenerationTunnelInlineBorder;
         }
         transform.position = p;
-        int lvlGenerationUpTo = Convert.ToInt32(Math.Ceiling(transform.position.z / lvlGenerationMeshDistance)) + lvlGenerationInAdvance;
+        int playersSection = Convert.ToInt32(Math.Ceiling(transform.position.z / lvlGenerationMeshDistance));
+        int lvlGenerationUpTo = playersSection + lvlGenerationInAdvance;
         while (lvlGenerationCurrent < lvlGenerationUpTo) {
             GameObject lvlGenerationGameObject = new GameObject("LvlGenerationGameObject");
             lvlGenerationGameObject.AddComponent<MeshFilter>().sharedMesh = lvlGenerationTestMesh;
@@ -128,21 +130,29 @@ public class FlightBoardController : MonoBehaviour {
             lvlGenerationGameObject.transform.position = Vector3.forward * lvlGenerationCurrent * lvlGenerationMeshDistance;
             lvlGenerationGameObject.GetComponent<Renderer>().material = lvlGenerationBaseMaterial;
             lvlGenerationGameObjects.Add(lvlGenerationGameObject);
+            if (lvlGenerationCurrent > -lvlGenerationInAdvance) {
+                GameObject collectable = Instantiate(originalCollectable);
+                collectable.transform.position = new Vector3(
+                    UnityEngine.Random.Range(-lvlGenerationTunnelWidth + lvlGenerationTunnelInlineBorder, lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder),
+                    UnityEngine.Random.Range(lvlGenerationTunnelInlineBorder, lvlGenerationTunnelHeight - lvlGenerationTunnelInlineBorder),
+                    lvlGenerationCurrent * lvlGenerationMeshDistance);
+                lvlGenerationGameObjects.Add(collectable);
+            }
             ++lvlGenerationCurrent;
         }
         for (int i = lvlGenerationGameObjects.Count - 1; i >= 0; i--)
         {
             GameObject lvlGenerationGameObject = lvlGenerationGameObjects[i];
-            if (transform.position.z - lvlGenerationGameObject.transform.position.z > lvlGenerationMeshDistance * lvlGenerationBackwards)
-            {
-                Destroy(lvlGenerationGameObject);
+            if (transform.position.z - lvlGenerationGameObject.transform.position.z > lvlGenerationMeshDistance * lvlGenerationBackwards) {
                 lvlGenerationGameObjects.RemoveAt(i);
+                Destroy(lvlGenerationGameObject);
             }
         }
     }
 
     void OnCollisionEnter(Collision col) {
         if (col.gameObject.tag == "Collectable") {
+            lvlGenerationGameObjects.Remove(col.gameObject);
             Destroy(col.gameObject);
             score++;
             UpdateScoreDisplay();
