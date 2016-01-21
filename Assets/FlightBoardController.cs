@@ -19,18 +19,20 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
     public int lvlGenerationInAdvance;
     public float lvlGenerationMeshDistance;
     public Material lvlGenerationBaseMaterial;
-    public Text scoreDisplay;
+    public GameObject scoreTextObject;
     public GameObject originalCollectable;
     private int score;
     private Mesh lvlGenerationTestMesh;
     private List<GameObject> lvlGenerationGameObjects;
 
     private void UpdateScoreDisplay() {
-        scoreDisplay.text = score.ToString();
+        scoreTextObject.GetComponent<TextMesh>().text = score.ToString();
     }
 
     void Start () {
         RotationController.CalibratedRotation().Add(this);
+
+        scoreTextObject.transform.position = new Vector3(0, lvlGenerationTunnelHeight, 10);
 
         lvlGenerationGameObjects = new List<GameObject>();
         lvlGenerationCurrent = -lvlGenerationBackwards;
@@ -82,6 +84,9 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
             p.y = lvlGenerationTunnelInlineBorder;
         }
         transform.position = p;
+        p = scoreTextObject.transform.position;
+        p.z = transform.position.z + 10;
+        scoreTextObject.transform.position = p;
         int playersSection = Convert.ToInt32(Math.Ceiling(transform.position.z / lvlGenerationMeshDistance));
         int lvlGenerationUpTo = playersSection + lvlGenerationInAdvance;
         while (lvlGenerationCurrent < lvlGenerationUpTo) {
