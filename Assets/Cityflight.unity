@@ -347,7 +347,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!1 &1320744033
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,6 +526,14 @@ Prefab:
       propertyPath: scoreTextObject
       value: 
       objectReference: {fileID: 1155664439}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationPositionFactorLeftRight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: rotationPositionFactorUpDown
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 13609708, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
     - {fileID: 6525284, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}

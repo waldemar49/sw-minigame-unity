@@ -10,7 +10,8 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
     public float maxRotLeftRight;
     public float maxRotUpDown;
     public float resetRotationFactor;
-    public float rotationPositionFactor;
+    public float rotationPositionFactorLeftRight;
+    public float rotationPositionFactorUpDown;
     public float lvlGenerationTunnelWidth;
     public float lvlGenerationTunnelHeight;
     public float lvlGenerationTunnelInlineBorder;
@@ -69,8 +70,8 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
         if (r.z > 180) {
             r.z -= 360;
         }
-        p.x -= r.z * rotationPositionFactor * Time.deltaTime;
-        p.y -= r.x * rotationPositionFactor * Time.deltaTime;
+        p.x -= r.z * rotationPositionFactorLeftRight * Time.deltaTime;
+        p.y -= r.x * rotationPositionFactorUpDown * Time.deltaTime;
         if (p.x > lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder) {
             p.x = lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder;
         }
