@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FlightBoardController : MonoBehaviour, PlainRotation.Listener {
+public class FlightBoardController : MonoBehaviour, Rotation.Listener {
+    public GameObject rotationOffest;
     public float speed;
     public float rotationSpeed;
     public float maxRotLeftRight;
@@ -28,7 +29,7 @@ public class FlightBoardController : MonoBehaviour, PlainRotation.Listener {
         scoreDisplay.text = score.ToString();
     }
 
-	void Start () {
+    void Start () {
         RotationController.CalibratedRotation().Add(this);
 
         lvlGenerationGameObjects = new List<GameObject>();
@@ -56,7 +57,7 @@ public class FlightBoardController : MonoBehaviour, PlainRotation.Listener {
         lvlGenerationTestMesh = mesh;
     }
 
-	void Update () {
+    void Update () {
         Vector3 r = transform.eulerAngles;
         Vector3 p = transform.position;
         p.z += speed * Time.deltaTime;
@@ -119,7 +120,7 @@ public class FlightBoardController : MonoBehaviour, PlainRotation.Listener {
     }
 
     public void On(Quaternion q) {
-        transform.rotation = q;
+        transform.rotation = q * Quaternion.Inverse(rotationOffest.transform.rotation);
         Vector3 r = transform.eulerAngles;
         if (r.x > maxRotUpDown && r.x < 180) {
             r.x = maxRotUpDown;
