@@ -121,6 +121,7 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
             lvlGenerationGameObjects.Remove(col.gameObject);
             Destroy(col.gameObject);
             score++;
+            GetComponent<AudioSource>().Play();
             UpdateScoreDisplay();
         }
     }
