@@ -9,10 +9,8 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
     public bool sidewaysRightIsForward;
     public GameObject rotationOffest;
     public float speed;
-    public float rotationSpeed;
     public float maxRotLeftRight;
     public float maxRotUpDown;
-    public float resetRotationFactor;
     public float rotationPositionFactorLeftRight;
     public float rotationPositionFactorUpDown;
     public float lvlGenerationTunnelWidth;
