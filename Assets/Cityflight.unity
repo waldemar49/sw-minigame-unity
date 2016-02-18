@@ -113,7 +113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 349026147}
-  thirdPersonView: 1
 --- !u!1 &349026147 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 111850, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
@@ -687,6 +686,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
       propertyPath: rotationPositionFactorUpDown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: sideways
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494472, guid: 4aa264ab35b22914199d2229acc98c3a, type: 2}
+      propertyPath: thirdPersonView
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:

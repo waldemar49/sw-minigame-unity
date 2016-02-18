@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class FlightBoardController : MonoBehaviour, Rotation.Listener {
+    public bool thirdPersonView;
+    public bool sideways;
+    public bool sidewaysRightIsForward;
     public GameObject rotationOffest;
     public float speed;
     public float rotationSpeed;
@@ -70,8 +73,19 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
         if (r.z > 180) {
             r.z -= 360;
         }
-        p.x -= r.z * rotationPositionFactorLeftRight * Time.deltaTime;
-        p.y -= r.x * rotationPositionFactorUpDown * Time.deltaTime;
+        float leftRight = r.z * rotationPositionFactorLeftRight;
+        float upDown = r.x * rotationPositionFactorLeftRight;
+        if (sideways) {
+            if (sidewaysRightIsForward) {
+                leftRight = r.x * rotationPositionFactorUpDown;
+                upDown = -r.z * rotationPositionFactorUpDown;
+            } else {
+                leftRight = -r.x * rotationPositionFactorUpDown;
+                upDown = r.z * rotationPositionFactorUpDown;
+            }
+        }
+        p.x -= leftRight * Time.deltaTime;
+        p.y -= upDown * Time.deltaTime;
         if (p.x > lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder) {
             p.x = lvlGenerationTunnelWidth - lvlGenerationTunnelInlineBorder;
         }
@@ -135,7 +149,7 @@ public class FlightBoardController : MonoBehaviour, Rotation.Listener {
         if (r.x < 360 - maxRotUpDown && r.x > 180) {
             r.x = 360 - maxRotUpDown;
         }
-        r.y = 0.0f;
+        r.y = sideways ? (sidewaysRightIsForward ? -90.0f : 90.0f) : 0.0f;
         if (r.z > maxRotLeftRight && r.z < 180) {
             r.z = maxRotLeftRight;
         }
